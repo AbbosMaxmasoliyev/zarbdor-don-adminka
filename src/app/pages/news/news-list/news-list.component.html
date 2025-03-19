@@ -1,0 +1,22 @@
+<div>
+  <a [routerLink]="['/news/create']" routerLinkActive="router-link-active">
+    Yangilik yaratish
+  </a>
+
+  <div *ngIf="newsList()" class="grid grid-cols-2 gap-3 justify-center">
+    <div
+      class="card border rounded-3xl grid grid-cols-[auto_150px] w-full m-auto gap-3 justify-items-center hover:bg-purple-400 hover:text-white transition-all duration-[750ms]"
+      *ngFor="let news of newsList(); let i = index"
+    >
+      <div class="p-2 w-full grid grid-rows-[70px_30px]">
+        <p class="font-bold font-poppins">{{ news.contents!["uz"].title }}</p>
+        <p class="w-full">{{ news.createdAt | date : "fullDate" }}</p>
+      </div>
+      <img
+        [src]="apiUrl + news.image"
+        alt=""
+        class="w-full h-[150px] object-cover rounded-e-3xl"
+      />
+    </div>
+  </div>
+</div>

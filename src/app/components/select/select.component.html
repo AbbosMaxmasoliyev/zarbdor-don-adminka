@@ -1,0 +1,29 @@
+<div class="mb-3">
+  <label *ngIf="label" class="block mb-1 text-gray-600 text-sm">
+    {{ label }}
+  </label>
+  <div
+    #selectContainer
+    (click)="focusSelect()"
+    class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text"
+  >
+    <span *ngIf="prefix" class="text-gray-400 mr-2">{{ prefix }}</span>
+    <select
+      pSelect
+      ngClass="border-none"
+      class="bg-transparent outline-none flex-1 text-gray-700 text-sm w-full"
+      (blur)="onBlur()"
+      (focus)="onFocus()"
+      [formControl]="control()"
+      [required]="required"
+    >
+      <option value="" disabled selected>{{ placeholder }}</option>
+      <option *ngFor="let option of options; trackByFn" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+  @if(error()) {
+  <span class="text-red-500 text-sm self-end px-2 py-1">{{ error() }}</span>
+  }
+</div>

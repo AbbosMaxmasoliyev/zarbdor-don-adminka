@@ -1,0 +1,35 @@
+
+:host ::ng-deep ngx-editor-menu {
+  background-color: gray !important;
+  color: black !important;
+}
+
+/* Agar tugmalar yoki boshqa elementlar ham qora rangda bo‘lishini xohlasangiz */
+:host ::ng-deep ngx-editor-menu * {
+  color: black !important;
+}
+
+:host ::ng-deep ngx-editor {
+  width: 100%;
+  display: block;
+  border: none!important;
+  box-shadow: none !important; /* Agar border o‘rniga soyalar bo‘lsa */
+  .NgxEditor__Content{
+    border: none;
+    min-height: 330px;
+    border: none!important;
+    border-color: transparent!important;
+    border-style: none!important;
+    border-width: 0!important;
+    outline: none!important;
+  }
+}
+
+.NgxEditor{
+  border: none!important;
+}
+
+
+.focused {
+  @apply outline-purple-500 outline outline-1;
+}

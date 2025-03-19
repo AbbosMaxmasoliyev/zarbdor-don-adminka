@@ -1,0 +1,9 @@
+<a
+  [routerLink]="link()"
+  [routerLinkActive]="[activeClass()]"
+  [routerLinkActiveOptions]="{ exact: true }"
+  [ngClass]="className()"
+>
+  <mat-icon *ngIf="icon()" [svgIcon]="icon()"></mat-icon>
+  {{ label() }}
+</a>

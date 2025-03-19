@@ -1,0 +1,47 @@
+<div class="bg-white min-h-screen max-w-[264px] w-[264px] shadow-[5px_35px_35px_rgba(242,242,250,0.9)] z-2 sticky top-0">
+  <div class="p-5">
+    <img src="assets/logo.svg" alt />
+  </div>
+  <ul class="mt-4 flex flex-col gap-2 px-2">
+    <li>
+      <app-active-link
+        [icon]="'grid'"
+        label="Bosh sahifa"
+        [link]="['/dashboard']"
+        [activeClass]="'active'"
+        [className]="'flex items-center text-gray-400 gap-2 p-4 font-poppins'"
+      >
+      </app-active-link>
+    </li>
+    <li>
+      <app-active-link
+        [icon]="'news'"
+        label="Yangiliklar"
+        [link]="['/news']"
+        [activeClass]="'active'"
+        [className]="'flex items-center text-gray-400 gap-2 p-4 font-poppins'"
+      >
+      </app-active-link>
+    </li>
+    <li>
+      <app-active-link
+        [icon]="'chart'"
+        label="Jamiyat"
+        [link]="['/association']"
+        [activeClass]="'active'"
+        [className]="'flex items-center text-gray-400 gap-2 p-4 font-poppins'"
+      >
+      </app-active-link>
+    </li>
+    <li>
+      <app-active-link
+        [icon]="'news'"
+        label="Jamiyat"
+        [link]="['/news']"
+        [activeClass]="'active'"
+        [className]="'flex items-center text-gray-400 gap-2 p-4 font-poppins'"
+      >
+      </app-active-link>
+    </li>
+  </ul>
+</div>
