@@ -2,6 +2,7 @@ import { Component, ElementRef, forwardRef, input, Input, signal, viewChild } fr
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule, FormControl, NG_VALUE_ACCESSOR, AbstractControl } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 enum InputTypes {
   Text = 'text',
   Password = 'password',
@@ -12,7 +13,7 @@ enum InputTypes {
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, MatIconModule],
   templateUrl: "./input.component.html",
   providers: [
     {
@@ -30,11 +31,11 @@ export class InputComponent {
   innerValue = '';
   placeholder = input<string>('');
   label = input<string>('');
-  prefix = input<string>("");
   control = input<AbstractControl<any, any> | null>();
   required = input<boolean>(false)
   inputTypes = InputTypes;
   errorControl = input<string>("");
+  icon = input<string>("")
 
   error = signal('');
   ngOnChanges(): void {

@@ -14,7 +14,7 @@ export class IconService {
   constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
     this.registerIcons();
   }
-  private iconsArray = ["grid", "basket", "news", "chart", "image"]
+  private iconsArray = ["grid", "basket", "news", "chart", "image", "trash", "pencil", "eye", "search", "envelope", "calendar", "bell", "plus"]
 
   private registerIcons(): void {
     this.iconsArray.forEach(icon => {

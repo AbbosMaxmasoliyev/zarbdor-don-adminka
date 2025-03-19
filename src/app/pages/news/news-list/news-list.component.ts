@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { INews } from './../../../types/backend/news.type';
 import { Component, computed, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -8,7 +9,7 @@ import { environment } from "../../../../environments/environment.development"
 @Component({
   selector: 'app-news-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, DatePipe],
+  imports: [RouterLink, CommonModule, DatePipe, MatIconModule],
   templateUrl: './news-list.component.html',
   styleUrl: './news-list.component.scss'
 })

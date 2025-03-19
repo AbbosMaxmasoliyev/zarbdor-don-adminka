@@ -5,9 +5,13 @@
   <div
     #inputContainer
     (click)="input.focus()"
-    class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text"
+    class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text flex"
   >
-    <span *ngIf="prefix()" class="text-gray-400 mr-2">{{ prefix() }}</span>
+    <mat-icon
+      *ngIf="icon()"
+      class="text-neutral-800 mr-2"
+      [svgIcon]="icon()"
+    ></mat-icon>
     <input
       #input
       [required]="required()"

@@ -1,22 +1,67 @@
 <div>
-  <a [routerLink]="['/news/create']" routerLinkActive="router-link-active">
-    Yangilik yaratish
-  </a>
+  <div class="flex items-center w-full justify-between my-3">
+    <p class="font-bold text-xl font-poppins">Yangiliklar</p>
 
-  <div *ngIf="newsList()" class="grid grid-cols-2 gap-3 justify-center">
+    <a [routerLink]="['/news/create']" routerLinkActive="router-link-active" class="flex items-center gap-3 bg-purple-500 py-3 px-4 rounded-lg text-white font-poppins text-sm hover:bg-purple-600">
+      <mat-icon svgIcon="plus" class="!w-[16px]"></mat-icon>
+      Yangilik yaratish
+    </a>
+  </div>
+
+  <div
+    *ngIf="newsList()"
+    class="grid grid-cols-1 justify-center bg-white rounded-xl overflow-hidden shadow-md"
+  >
     <div
-      class="card border rounded-3xl grid grid-cols-[auto_150px] w-full m-auto gap-3 justify-items-center hover:bg-purple-400 hover:text-white transition-all duration-[750ms]"
+      class="grid grid-cols-[595px_150px_150px_auto] w-full m-auto gap-3 justify-items-center hover:bg-slate-200 transition-all duration-[750ms] p-[18px] font-poppins text-sm font-semibold text-neutral-800"
+    >
+      <p class="text-left w-full">Yangilik nomi</p>
+      <p class="w-full">Vaqti</p>
+      <p class="w-full">Ko'rishlar soni</p>
+      <p class="w-full">Amallar</p>
+    </div>
+    <div
+      class="grid grid-cols-[595px_150px_150px_auto] w-full m-auto gap-3 items-center hover:bg-slate-200 transition-all duration-[150ms] p-[18px] font-poppins"
       *ngFor="let news of newsList(); let i = index"
     >
-      <div class="p-2 w-full grid grid-rows-[70px_30px]">
-        <p class="font-bold font-poppins">{{ news.contents!["uz"].title }}</p>
-        <p class="w-full">{{ news.createdAt | date : "fullDate" }}</p>
+      <div class="flex items-center w-full gap-2">
+        <img [src]="apiUrl + news.image" class="w-11 h-11 rounded-md" />
+        <div class="grid grid-row-[25px_20px]">
+          <p class="line-clamp-1 text-sm">
+            {{ news.contents!["uz"].title }}
+          </p>
+          <p class="line-clamp-1 text-[12px] text-gray-500">
+            {{ news.slug }}
+          </p>
+        </div>
       </div>
-      <img
-        [src]="apiUrl + news.image"
-        alt=""
-        class="w-full h-[150px] object-cover rounded-e-3xl"
-      />
+      <p class="text-xs text-gray-600">
+        {{ news.createdAt | date : "dd MMM yyyy" }}
+      </p>
+      <p class="text-xs text-gray-600">
+        {{ 1000 }}
+      </p>
+      <div class="flex gap-3">
+        <button
+          class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-green-600 w-8 h-8 rounded-full"
+        >
+          <mat-icon
+            class="text-inherit !w-[16px] !h-[16px]"
+            svgIcon="pencil"
+          ></mat-icon>
+        </button>
+        <button
+          class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-purple-600 w-8 h-8 rounded-full"
+        >
+          <mat-icon class="!w-[16px] !h-[16px]" svgIcon="eye"></mat-icon>
+        </button>
+
+        <button
+          class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-red-600 w-8 h-8 rounded-full"
+        >
+          <mat-icon class="!w-[16px] !h-[16px]" svgIcon="trash"></mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>
