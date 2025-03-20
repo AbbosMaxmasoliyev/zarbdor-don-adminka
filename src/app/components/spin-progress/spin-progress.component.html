@@ -1,0 +1,54 @@
+<div
+  class="p-6 flex flex-col items-center space-y-6 bg-gray-100 dark:bg-gray-900 min-h-screen"
+>
+  <!-- Theme Toggle Button -->
+  <button
+    (click)="toggleTheme()"
+    class="px-4 py-2 rounded bg-blue-500 text-white"
+  >
+    {{ isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode" }}
+  </button>
+
+  <!-- Radial Bar Chart -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded shadow-md">
+    <apx-chart
+      [series]="radialChartOptions.series"
+      [chart]="radialChartOptions.chart"
+      [plotOptions]="radialChartOptions.plotOptions"
+      [labels]="radialChartOptions.labels"
+    >
+    </apx-chart>
+  </div>
+
+  <!-- Sparkline Charts -->
+  <div class="grid grid-cols-2 gap-6">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded shadow-md">
+      <apx-chart
+        [series]="spark1.series"
+        [chart]="spark1.chart"
+        [stroke]="spark1.stroke"
+      ></apx-chart>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-4 rounded shadow-md">
+      <apx-chart
+        [series]="spark2.series"
+        [chart]="spark2.chart"
+        [stroke]="spark2.stroke"
+      ></apx-chart>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-4 rounded shadow-md">
+      <apx-chart
+        [series]="spark3.series"
+        [chart]="spark3.chart"
+        [stroke]="spark3.stroke"
+      ></apx-chart>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-4 rounded shadow-md">
+      <apx-chart
+        [series]="spark4.series"
+        [chart]="spark4.chart"
+        [stroke]="spark4.stroke"
+      ></apx-chart>
+    </div>
+  </div>
+</div>

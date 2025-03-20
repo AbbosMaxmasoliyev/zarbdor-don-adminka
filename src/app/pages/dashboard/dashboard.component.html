@@ -1,0 +1,36 @@
+<div class="font-poppins">
+  <div class="grid grid-cols-4 gap-4 p-6">
+    <app-statistic-card
+      title="Total Revenue"
+      value="$75,500"
+      change="+10%"
+      bgColor="#181B27"
+      icon="account_balance_wallet"
+    ></app-statistic-card>
+    <app-statistic-card
+      title="Total Order"
+      value="31,500"
+      change="+15%"
+      bgColor="#6A0DAD"
+      icon="shopping_cart"
+    ></app-statistic-card>
+    <app-statistic-card
+      title="Total Customer"
+      value="$24,500"
+      change="-25%"
+      bgColor="#007BFF"
+      icon="people"
+    ></app-statistic-card>
+    <app-statistic-card
+      title="Total Product"
+      value="247"
+      change="0%"
+      bgColor="#0099CC"
+      icon="category"
+    ></app-statistic-card>
+  </div>
+
+  <div class="p-6">
+    <app-orders-table />
+  </div>
+</div>

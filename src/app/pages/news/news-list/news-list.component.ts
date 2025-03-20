@@ -6,10 +6,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NewsStore } from '../../../store/news.store';
 import { IResponse } from '../../../types/backend/response.type';
 import { environment } from "../../../../environments/environment.development"
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 @Component({
   selector: 'app-news-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, DatePipe, MatIconModule],
+  imports: [RouterLink, CommonModule, DatePipe, MatIconModule, ProgressSpinnerModule],
   templateUrl: './news-list.component.html',
   styleUrl: './news-list.component.scss'
 })

@@ -1,0 +1,14 @@
+::ng-deep mat-progress-spinner circle {
+  stroke-linecap: round !important;
+}
+
+.half-spinner {
+  position: relative;
+  width: 264px;
+  height: 264px;
+  /* Faqat yarim doira */
+  overflow: hidden;
+  /* Pastki qismini kesib tashlaydi */
+  border: 1px solid red;
+}
+

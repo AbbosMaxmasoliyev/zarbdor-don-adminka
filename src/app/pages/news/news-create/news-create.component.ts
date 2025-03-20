@@ -9,22 +9,29 @@ import { MatIconModule } from '@angular/material/icon';
 import { SelectComponent } from "../../../components/select/select.component";
 import { HttpService } from '../../../service/http.service';
 import { NewsService } from '../../../service/news.service';
+import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-news-create',
   templateUrl: './news-create.component.html',
-  imports: [InputComponent, EditorComponent, CommonModule, FileUploadComponent, MatIconModule, ReactiveFormsModule, SelectComponent],
+  imports: [InputComponent, EditorComponent, CommonModule, FileUploadComponent, MatIconModule, ReactiveFormsModule, SelectComponent, Toast],
   styleUrls: ['./news-create.component.css'],
-  standalone: true
+  standalone: true,
+  providers: [MessageService]
+
 })
 export class NewsCreateComponent implements OnInit {
   newsService = inject(NewsService)
   httpService = inject(HttpService)
+  constructor(private messageService: MessageService) { }
+
   newsForm: any;
   languages: { [key: string]: boolean } = { uz: true };
   languageForTranslatation: Record<string, string> = { uz: "O'zbek", ko: "Korea", ru: "Rus", en: "Ingliz tilida" }
   availableLanguages: string[] = ['ru', 'en', 'ko'];
   languageFor: string[] = Object.keys(this.languages);
+
   options: OptionType[] = [{
     label: "Bayramlar",
     value: "holy"
@@ -82,11 +89,12 @@ export class NewsCreateComponent implements OnInit {
 
     // Contents obyektini JSON formatida qo'shish
 
+
     this.newsService.create(formData).subscribe(
       (response) => {
         console.log('Ma\'lumotlar muvaffaqiyatli yuborildi:', response);
-        // Yuborilganidan so'ng, formni tozalash
-        // this.newsForm.reset();
+        this.messageService.add({ severity: 'success', summary: 'Muvaffaqqiyatli', detail: 'Post muvaffaqqiyatli yaratildi!', life: 3000 });
+        this.newsForm.reset();
       },
       (error) => {
         console.log('Xatolik yuz berdi:', error);
