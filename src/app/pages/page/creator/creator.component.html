@@ -1,51 +1,22 @@
 <div class="p-mb-4 bg-white text-black p-5 w-[100%] min-h-screen">
   <p-toast />
 
-  <p class="text-2xl font-bold text-black mb-5">Yangilik yaratish</p>
+  <p class="text-2xl font-bold text-black mb-5">Sahifa yaratish</p>
   <form
     [formGroup]="newsForm"
     (ngSubmit)="onSubmit()"
     class="w-full flex flex-col gap-4"
   >
     <div class="grid grid-cols-2 gap-6">
-      <div class="flex flex-col gap-3 w-full">
-        <app-input
-          label="Linkni kiriting"
-          [control]="getFormControl(newsForm.get('slug'))"
-          formControlName="slug"
-          [required]="true"
-          [placeholder]="'Linkni kiriting'"
-          [errorControl]="getFormControlError('slug') || ''"
-        ></app-input>
-        <app-select
-          [required]="true"
-          label="Yangilik kategoriyasini kiriting"
-          placeholder="Yangilik kategoriyasini tanlang"
-          [options]="options"
-          [control]="getFormControl(newsForm.get('category'))"
-          [errorControl]="getFormControlError('image') || ''"
-        />
-      </div>
-      <app-file-upload
-        [control]="getFormControl(newsForm.get('image'))"
-        label="Rasm yuklash"
+
+      <app-select
         [required]="true"
-        [errorControl]="getFormControlError('image') || ''"
-      >
-        <div
-          class="h-40 flex flex-col items-center justify-center border border-dashed border-gray-400 rounded-lg p-4"
-        >
-          <div
-            class="w-11 h-11 rounded-md flex justify-center items-center bg-purple-600"
-          >
-            <mat-icon [svgIcon]="'image'" class="text-white"></mat-icon>
-          </div>
-          <p class="text-gray-600 text-sm mt-2 text-center">
-            Rasmni bu yerga sudrab olib tashlang yoki rasm qo‘shish tugmasini
-            bosing
-          </p>
-        </div>
-      </app-file-upload>
+        label="Sahifani tanlang"
+        placeholder="Sahifani tanlang"
+        [options]="options"
+        [control]="getFormControl(newsForm.get('page'))"
+        [errorControl]="getFormControlError('page') || ''"
+      />
     </div>
     <div *ngFor="let lang of languageFor; let i = index">
       <ng-container *ngIf="contents.get(lang) as control">
@@ -76,7 +47,8 @@
               getFormControlError('translations.' + lang + '.description') || ''
             "
             class="mb-4"
-          ></app-textarea>
+          >
+          </app-textarea>
 
           <app-editor
             [required]="true"

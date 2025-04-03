@@ -19,7 +19,6 @@ export class NewsListComponent implements OnInit {
   today: Date = new Date();
   newsStore = inject(NewsStore);
   apiUrl = environment.apiUrl
-  // ✅ To‘g‘ri Signal bog'lash
   newsList: WritableSignal<INews[] | null> = signal(null);
 
   ngOnInit(): void {

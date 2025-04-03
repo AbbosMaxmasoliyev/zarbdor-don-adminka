@@ -8,22 +8,22 @@ import { FileUploadComponent } from '../../../components/fileupload/fileupload.c
 import { MatIconModule } from '@angular/material/icon';
 import { SelectComponent } from "../../../components/select/select.component";
 import { HttpService } from '../../../service/http.service';
-import { NewsService } from '../../../service/news.service';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { TextareaComponent } from '../../../components/textarea/textarea.component';
+import { PageService } from '../../../service/page.service';
 
 @Component({
-  selector: 'app-news-create',
-  templateUrl: './news-create.component.html',
-  imports: [InputComponent, EditorComponent, CommonModule, FileUploadComponent, MatIconModule, ReactiveFormsModule, SelectComponent, Toast, TextareaComponent],
-  styleUrls: ['./news-create.component.css'],
+  selector: 'app-creator',
+  templateUrl: './creator.component.html',
+  imports: [InputComponent, EditorComponent, CommonModule, MatIconModule, ReactiveFormsModule, SelectComponent, Toast, TextareaComponent],
+  styleUrls: ['./creator.component.css'],
   standalone: true,
   providers: [MessageService]
 
 })
-export class NewsCreateComponent implements OnInit {
-  newsService = inject(NewsService)
+export class CreatorComponent implements OnInit {
+  service = inject(PageService)
   httpService = inject(HttpService)
   constructor(private messageService: MessageService) { }
 
@@ -33,32 +33,136 @@ export class NewsCreateComponent implements OnInit {
   availableLanguages: string[] = ['ru', 'en', 'ko'];
   languageFor: string[] = Object.keys(this.languages);
 
-  options: OptionType[] = [{
-    label: "Bayramlar",
-    value: "holy"
-  },
-  {
-    label: "Mavsum",
-    value: "season"
-  },
-  {
-    label: "Export",
-    value: "export"
-  },
-  {
-    label: "Hamkorlik",
-    value: "partner"
-  }]
+  options: OptionType[] = [
+    {
+      "value": "bosh-sahifa",
+      "label": "Bosh sahifa"
+    },
+    {
+      "value": "jamiyat",
+      "label": "Jamiyat"
+    },
+    {
+      "value": "jamiyat-haqida",
+      "label": "Jamiyat haqida"
+    },
+    {
+      "value": "ish-grafigi",
+      "label": "Ish grafigi"
+    },
+    {
+      "value": "guvohnoma-va-sertifikatlar",
+      "label": "Guvohnoma va sertifikatlar"
+    },
+    {
+      "value": "bank-rekvizitlari",
+      "label": "Bank rekvizitlari"
+    },
+    {
+      "value": "zarbdor-elevatori-aj-predmeti-va-maqsadi",
+      "label": "ZARBDOR ELEVATORI\" AJ predmeti va maqsadi"
+    },
+    {
+      "value": "tashkiliy-tuzilma",
+      "label": "Tashkiliy tuzilma"
+    },
+    {
+      "value": "kuzatuv-kengashi",
+      "label": "Kuzatuv kengashi"
+    },
+    {
+      "value": "boshqaruv",
+      "label": "Boshqaruv"
+    },
+    {
+      "value": "taftish-komissiyasi",
+      "label": "Taftish komissiyasi"
+    },
+    {
+      "value": "shoba-va-tobe-xojalik-jamiyatlari",
+      "label": "Sho'ba va tobe xo'jalik jamiyatlari"
+    },
+    {
+      "value": "aksiyador-va-investorlarga",
+      "label": "Aksiyador va investorlarga"
+    },
+    {
+      "value": "guvohnoma",
+      "label": "Guvohnoma"
+    },
+    {
+      "value": "korporativ-hujjatlar",
+      "label": "Korporativ hujjatlar"
+    },
+    {
+      "value": "kapital-tuzilmasi",
+      "label": "Kapital tuzilmasi"
+    },
+    {
+      "value": "affillangan-shaxslar",
+      "label": "Affillangan shaxslar"
+    },
+    {
+      "value": "aksiyadorlarning-umumiy-yigilish-natijalari",
+      "label": "Aksiyadorlarning umumiy yig'ilish natijalari"
+    },
+    {
+      "value": "rivojlanish-strategiyasi",
+      "label": "Rivojlanish strategiyasi"
+    },
+    {
+      "value": "biznes-rejalar",
+      "label": "Biznes rejalar"
+    },
+    {
+      "value": "muhim-faktlar",
+      "label": "Muhim faktlar"
+    },
+    {
+      "value": "hisobotlar",
+      "label": "Hisobotlar"
+    },
+    {
+      "value": "asosiy-korsatkichlar",
+      "label": "Asosiy ko'rsatkichlar"
+    },
+    {
+      "value": "auditorlik-xulosalari",
+      "label": "Auditorlik xulosalari"
+    },
+    {
+      "value": "divedentlar",
+      "label": "Divedentlar"
+    },
+    {
+      "value": "matbuot-markazi",
+      "label": "Matbuot markazi"
+    },
+    {
+      "value": "yangiliklar",
+      "label": "Yangiliklar"
+    },
+    {
+      "value": "sayt-xaritasi",
+      "label": "Sayt xaritasi"
+    },
+    {
+      "value": "pochta",
+      "label": "Pochta"
+    },
+    {
+      "value": "bosh-ish-orinlari",
+      "label": "Bo'sh ish o'rinlari"
+    }
+  ]
   ngOnInit(): void {
     this.newsForm = new FormGroup({
-      image: new FormControl<any>(null, [Validators.required]), // Fayllar massivini kiritish
-      slug: new FormControl('', [Validators.required, this.slugValidator]),
-      category: new FormControl('', [Validators.required, this.slugValidator]),
+      page: new FormControl('', [Validators.required, this.slugValidator]),
       contents: new FormGroup({
         uz: new FormGroup({
           title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
           description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]),
-          content: new FormControl('', [Validators.required, Validators.minLength(20)])
+          content: new FormControl(``, [Validators.required, Validators.minLength(20)])
         })
       }),
     });
@@ -69,29 +173,18 @@ export class NewsCreateComponent implements OnInit {
 
 
   onSubmit(): void {
-    console.log(this.newsForm.controls)
     if (this.newsForm.invalid) {
       this.newsForm.markAllAsTouched();
+      this.newsForm.setErrors(this.newsForm.errors)
       console.log("Form xatoliklar mavjud, iltimos, to‘g‘ri to‘ldiring.");
       return;
     }
-    // FormData obyektini yaratish
-    let formData = new FormData();
-    formData.append('slug', this.newsForm.value.slug);
-    formData.append('category', this.newsForm.value.category);
-    formData.append('contents', JSON.stringify(this.newsForm.value.contents)); // contentsni JSON sifatida saqlaymiz
-    console.log(this.newsForm.value.contents)
-    // Faylni FormData'ga qo'shish
-    const uploadedFile = this.newsForm.get('image')!.value;
-    console.log(uploadedFile)
-    if (uploadedFile[0]) {
-      formData.append('image', uploadedFile[0]); // Faylni FormData'ga qo'shish
-    }
+
 
     // Contents obyektini JSON formatida qo'shish
 
 
-    this.newsService.create(formData).subscribe(
+    this.service.create(this.newsForm.value).subscribe(
       (response) => {
         console.log('Ma\'lumotlar muvaffaqiyatli yuborildi:', response);
         this.messageService.add({ severity: 'success', summary: 'Muvaffaqqiyatli', detail: 'Post muvaffaqqiyatli yaratildi!', life: 3000 });

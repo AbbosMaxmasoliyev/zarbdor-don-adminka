@@ -2,9 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: "Poppins",  sans-serif; }
+html,
+body {
+  height: 100%;
+}
 
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+
+ol,
+ul,
+menu {
+  list-style: revert;
+  padding: revert;
+  margin: revert;
+  box-sizing: revert;
+  padding-left: 25px;
+}
+
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: revert;
+  font-weight: revert;
+}
 .focused {
   @apply outline-purple-500 outline outline-1;
 }

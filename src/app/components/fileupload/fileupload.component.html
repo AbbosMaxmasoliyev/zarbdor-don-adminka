@@ -3,12 +3,12 @@
   <div class="card w-full">
     <p-toast></p-toast>
     <p-fileupload
-      chooseLabel="Rasm yuklash"
+      chooseLabel="File yuklash"
       [chooseStyleClass]="'!bg-purple-600 !border-none'"
       name="demo[]"
       (onSelect)="onUpload($event)"
       [multiple]="false"
-      accept="image/*"
+      [accept]="accepts || 'image/*'"
       maxFileSize="1000000"
       mode="advanced"
       [className]="'w-full'"

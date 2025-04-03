@@ -1,4 +1,6 @@
-<div class="bg-white min-h-screen max-w-[264px] w-[264px] shadow-[5px_35px_35px_rgba(242,242,250,0.9)] z-2 sticky top-0">
+<div
+  class="bg-white min-h-screen max-w-[264px] w-[264px] shadow-[5px_35px_35px_rgba(242,242,250,0.9)] z-2 sticky top-0"
+>
   <div class="p-5">
     <img src="assets/logo.svg" alt />
   </div>
@@ -26,13 +28,22 @@
     <li>
       <app-active-link
         [icon]="'chart'"
-        label="Jamiyat"
-        [link]="['/association']"
+        label="Sahifalar"
+        [link]="['/pages']"
         [activeClass]="'active'"
         [className]="'flex items-center text-gray-400 gap-2 p-4 font-poppins'"
       >
       </app-active-link>
     </li>
-
+    <li>
+      <app-active-link
+        [icon]="'envelope'"
+        label="Hujjatlar"
+        [link]="['/documents']"
+        [activeClass]="'active'"
+        [className]="'flex items-center text-gray-400 gap-2 p-4 font-poppins'"
+      >
+      </app-active-link>
+    </li>
   </ul>
 </div>

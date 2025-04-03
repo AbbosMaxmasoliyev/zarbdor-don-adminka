@@ -1,4 +1,5 @@
 export interface IResponse<T> {
   status: boolean,
-  data: T
+  data: T,
+  page?:T
 }

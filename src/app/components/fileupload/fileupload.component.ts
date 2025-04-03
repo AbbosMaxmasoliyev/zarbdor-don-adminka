@@ -19,14 +19,30 @@ export class FileUploadComponent implements OnChanges {
   @Input() label!: string;
   @Input() required: boolean = false;
   @Input() errorControl: string = "";
+  @Input() accepts: string = "";
 
   error = signal('');
-
+  ngOnInit(): void {
+    // Agar formga oldindan fayl bor bo‘lsa (masalan, tahrirlash rejimi)
+    if (this.control.value && this.control.value[0] instanceof File) {
+      this.readFileAsDataURL(this.control.value[0]);
+    }
+  }
+  private readFileAsDataURL(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.pictureUrl = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
   ngOnChanges(): void {
     if (this.errorControl) {
       this.error.set(this.errorControl);
     }
   }
+
+
+
 
   constructor(private messageService: MessageService) { }
 
@@ -55,3 +71,4 @@ export class FileUploadComponent implements OnChanges {
     });
   }
 }
+

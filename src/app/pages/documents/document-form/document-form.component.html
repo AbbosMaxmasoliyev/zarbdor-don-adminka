@@ -1,0 +1,52 @@
+<div class="p-5 bg-white rounded-xl min-w-96">
+  <h2 class="text-lg font-semibold mb-4">
+    {{ data?._id ? "Hujjatni tahrirlash" : "Yangi hujjat qo‘shish" }}
+  </h2>
+
+  <form [formGroup]="documentForm" (ngSubmit)="save()" class="space-y-4">
+    <div>
+      <!-- <label class="block text-sm mb-1"></label> -->
+      <app-input
+        label="Sarlavha"
+        [placeholder]="'Sarlavhani kiriting'"
+        formControlName="title"
+        [required]="true"
+        [errorControl]="getFormControlError('title') || ''"
+      />
+      <app-file-upload
+        [control]="getFormControl(documentForm.get('document'))"
+        label="Hujjatni yuklang"
+        [required]="true"
+        accepts=".pdf"
+        [errorControl]="getFormControlError('document') || ''"
+      />
+      <app-file-upload
+        [control]="getFormControl(documentForm.get('thumbnail'))"
+        label="Thumbnail uchun rasm yuklang"
+        [required]="true"
+        [errorControl]="getFormControlError('thumbnail') || ''"
+      />
+      <app-select
+        [required]="true"
+        label="Hujjat turini tanlang"
+        placeholder="Hujjat turini tanlang"
+        [options]="options"
+        [control]="getFormControl(documentForm.get('type'))"
+        [errorControl]="getFormControlError('type') || ''"
+      />
+    </div>
+
+    <div class="flex justify-end space-x-2 pt-4">
+      <!-- <button type="button" (click)="dialogRef.close()" class="px-4 py-2 border rounded hover:bg-gray-100">
+        Bekor qilish
+      </button> -->
+      <!-- [disabled]="documentForm!.invalid" -->
+      <button
+        type="submit"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Saqlash
+      </button>
+    </div>
+  </form>
+</div>

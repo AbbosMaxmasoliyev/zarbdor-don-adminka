@@ -1,0 +1,61 @@
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-xl font-semibold">Hujjatlar ro‘yxati</h2>
+  <button
+    (click)="openModal()"
+    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+  >
+    + Yangi hujjat
+  </button>
+</div>
+
+<div *ngIf="loading | async" class="text-gray-500 mb-4">Yuklanmoqda...</div>
+<div *ngIf="error | async as error" class="text-red-500 mb-4">
+  Hujjatlar mavjud emas
+</div>
+<table
+  class="w-full border-collapse border border-gray-300"
+  *ngIf="loading && documents.length"
+>
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="border px-4 py-2 text-left">Sarlavha</th>
+      <th class="border px-4 py-2 text-left">Fayl yo‘li</th>
+      <th class="border px-4 py-2 text-left">Turi</th>
+      <th class="border px-4 py-2 text-center">Amallar</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="documents.length">
+    <tr *ngFor="let doc of documents">
+      <td class="border px-4 py-2">{{ doc.title }}</td>
+      <td class="border px-4 py-2">
+        <a
+          [href]="doc.document"
+          target="_blank"
+          class="text-blue-500 underline"
+          >{{ doc.document }}</a
+        >
+      </td>
+      <td class="border px-4 py-2">{{ doc.type }}</td>
+      <td class="border px-4 py-2 text-center flex justify-center">
+        <button
+          (click)="openModal(doc)"
+          class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-green-600 w-9 h-9  rounded-full"
+        >
+          <mat-icon
+            class="text-inherit !w-[16px] !h-[16px]"
+            svgIcon="pencil"
+          ></mat-icon>
+        </button>
+        <button
+          (click)="openModal(doc)"
+          class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-red-600 w-8 h-8 rounded-full"
+        >
+          <mat-icon
+            class="text-inherit !w-[16px] !h-[16px]"
+            svgIcon="trash"
+          ></mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

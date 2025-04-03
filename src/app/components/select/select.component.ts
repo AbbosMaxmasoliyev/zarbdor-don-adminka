@@ -34,9 +34,11 @@ export class SelectComponent {
   control = input<FormControl>(new FormControl());
   select = viewChild<ElementRef<HTMLSelectElement>>('select');
   error = signal('');
-  ngOnChanges(): void {
+  ngOnChanges(): void | string {
     if (this.errorControl) {
       this.error.set(this.errorControl);
+
+      return this.errorControl
     }
   }
   trackByFn(value: string, option: OptionType): string {

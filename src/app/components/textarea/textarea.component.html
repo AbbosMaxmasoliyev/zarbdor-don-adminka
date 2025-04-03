@@ -3,8 +3,8 @@
     label()
   }}</label>
   <div
-    #inputContainer
-    (click)="input.focus()"
+    #textAreaContainer
+    (click)="textarea.focus()"
     class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text flex"
   >
     <mat-icon
@@ -12,30 +12,22 @@
       class="text-neutral-800 mr-2"
       [svgIcon]="icon()"
     ></mat-icon>
-    <input
-      #input
-      [formControl]="formControl"
+    <textarea
+      #textarea
       [required]="required()"
-      [value]="innerValue"
-      (input)="onInputChange(input.value)"
+      (input)="onInputChange(textarea.value)"
       [disabled]="isDisabled"
-      [type]="
-        !isPasswordHidden()
-          ? type()
-          : type() === inputTypes.Password
-          ? inputTypes.Text
-          : type()
-      "
+      [formControl]="formControl"
+
       (blur)="onBlur()"
       [placeholder]="placeholder()"
       (focus)="onFocus()"
       class="bg-transparent outline-none flex-1 text-gray-700 text-sm w-full"
-    />
+      >{{ innerValue }}
+  </textarea
+    >
   </div>
   @if(error()) {
   <span class="text-red-500 text-sm self-end px-2 py-1">{{ error() }}</span>
   }
 </div>
-
-
-

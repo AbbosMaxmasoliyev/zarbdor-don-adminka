@@ -17,7 +17,7 @@
       [formControl]="control()"
       [required]="required"
     >
-      <option value="" disabled selected>{{ placeholder }}</option>
+      <option value="" selected disabled  >{{ placeholder }}</option>
       <option *ngFor="let option of options; trackByFn" [value]="option.value">
         {{ option.label }}
       </option>
