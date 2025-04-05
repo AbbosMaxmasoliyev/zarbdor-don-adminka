@@ -1,0 +1,31 @@
+<div class="mb-3">
+  <label *ngIf="label" class="block mb-1 text-gray-600 text-sm">
+    {{ label }}
+  </label>
+  <div
+    #selectContainer
+    (click)="focusSelect()"
+    class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text"
+  >
+    <p-multiSelect
+      class="no-prime-border"
+      #select
+      [options]="options"
+      [formControl]="control"
+      [placeholder]="placeholder"
+      [required]="required"
+      display="chip"
+      optionLabel="label"
+      optionValue="value"
+      [showToggleAll]="false"
+      [filter]="true"
+      [maxSelectedLabels]="maxSelectedLabels"
+      [styleClass]="'w-full border-none'"
+      (onFocus)="onFocus()"
+      selectedItemsLabel="{0} ta tanlandi"
+    ></p-multiSelect>
+  </div>
+  <span *ngIf="error" class="text-red-500 text-sm px-2 py-1 block">{{
+    error
+  }}</span>
+</div>

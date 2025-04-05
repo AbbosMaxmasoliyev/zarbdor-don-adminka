@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 html,
 body {
   height: 100%;
@@ -25,10 +27,31 @@ menu {
 
 
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-size: revert;
   font-weight: revert;
 }
+
 .focused {
   @apply outline-purple-500 outline outline-1;
+}
+
+:root {
+  --p-multiselect-focus-ring-color: transparent !important;
+  --p-multiselect-focus-ring-shadow: none;
+  --p-multiselect-focus-border-color: transparent !important;
+  --p-inputtext-focus-ring-color: "rgb(168 85 247)" !important;
+  --p-multiselect-list-header-padding: 0 !important;
+  --p-checkbox-checked-focus-border-color: #a855f7 !important;
+  --p-checkbox-checked-border-color: #a855f7 !important;
+  --p-checkbox-checked-hover-background: #a855f7 !important;
+  --p-checkbox-checked-background: #a855f7 !important;
+  --p-multiselect-focus-ring-width: 0;
+  --p-multiselect-focus-ring-style: none;
+  --p-multiselect-focus-ring-offset: 0;
 }

@@ -38,7 +38,7 @@ export class DocumentStore {
     ).subscribe(data => this.items.next(data));
   }
 
-  updateItem(id: string, newData: IDocument) {
+  updateItem(id: string, newData: FormData) {
     if (!this.items.value) return;
 
     this.documentService.update(id, newData).subscribe(updatedItem => {

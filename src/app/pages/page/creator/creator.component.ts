@@ -1,6 +1,6 @@
 import { OptionType } from '../../../components/select/select.component';
-import { Component, OnInit, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { InputComponent } from '../../../components/input/input.component';
 import { EditorComponent } from '../../../components/editor/editor.component';
 import { CommonModule } from '@angular/common';
@@ -12,11 +12,13 @@ import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { TextareaComponent } from '../../../components/textarea/textarea.component';
 import { PageService } from '../../../service/page.service';
+import { DocumentStore } from '../../../store/documents.store';
+import { MultiSelectComponent } from '../../../components/multiselect/multiselect.component';
 
 @Component({
   selector: 'app-creator',
   templateUrl: './creator.component.html',
-  imports: [InputComponent, EditorComponent, CommonModule, MatIconModule, ReactiveFormsModule, SelectComponent, Toast, TextareaComponent],
+  imports: [InputComponent, EditorComponent, MultiSelectComponent, CommonModule, MatIconModule, ReactiveFormsModule, SelectComponent, Toast, TextareaComponent],
   styleUrls: ['./creator.component.css'],
   standalone: true,
   providers: [MessageService]
@@ -25,6 +27,8 @@ import { PageService } from '../../../service/page.service';
 export class CreatorComponent implements OnInit {
   service = inject(PageService)
   httpService = inject(HttpService)
+  documents = inject(DocumentStore)
+  documentOptions: OptionType[] | null = null
   constructor(private messageService: MessageService) { }
 
   newsForm!: FormGroup;
@@ -32,12 +36,9 @@ export class CreatorComponent implements OnInit {
   languageForTranslatation: Record<string, string> = { uz: "O'zbek", ko: "Korea", ru: "Rus", en: "Ingliz tilida" }
   availableLanguages: string[] = ['ru', 'en', 'ko'];
   languageFor: string[] = Object.keys(this.languages);
-
+  pageType = signal<string>("")
   options: OptionType[] = [
-    {
-      "value": "bosh-sahifa",
-      "label": "Bosh sahifa"
-    },
+
     {
       "value": "jamiyat",
       "label": "Jamiyat"
@@ -143,10 +144,6 @@ export class CreatorComponent implements OnInit {
       "label": "Yangiliklar"
     },
     {
-      "value": "sayt-xaritasi",
-      "label": "Sayt xaritasi"
-    },
-    {
       "value": "pochta",
       "label": "Pochta"
     },
@@ -156,23 +153,102 @@ export class CreatorComponent implements OnInit {
     }
   ]
   ngOnInit(): void {
+    this.documents.fetchItems()
+    this.documents.getItems().subscribe(data => {
+      console.log(data)
+      this.documentOptions = data?.data.length ? data?.data.map(item => {
+        return { label: item?.title, value: item._id! }
+      }) : null
+    })
+
     this.newsForm = new FormGroup({
       page: new FormControl('', [Validators.required, this.slugValidator]),
+      type: new FormControl('documents', [Validators.required]),
+
       contents: new FormGroup({
         uz: new FormGroup({
-          title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-          description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]),
-          content: new FormControl(``, [Validators.required, Validators.minLength(20)])
+          title: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)]),
+          description: new FormControl('', [Validators.minLength(10), Validators.maxLength(500)]),
+          content: new FormControl('', [Validators.minLength(20)])
         })
       }),
+
+      documents: new FormArray([
+        new FormGroup({
+          title: new FormControl(''), // optional
+          documentIds: new FormControl(['67eb909807da93fb955030ac']) // default selected
+        })
+      ])
     });
 
+    this.newsForm.get('type')?.valueChanges.subscribe((type) => {
+      this.updateValidationBasedOnType(type);
+    });
+    this.updateValidationBasedOnType(this.newsForm.get('type')?.value);
+
+  }
+  messageOpen(): void {
+    this.messageService.add({ severity: 'success', summary: 'Muvaffaqqiyatli', detail: 'Post muvaffaqqiyatli yaratildi!', life: 10000 });
+    this.newsForm.reset();
+  }
+  updateValidationBasedOnType(type: string) {
+    const contentsGroup = this.newsForm.get('contents') as FormGroup;
+    const documentsArray = this.newsForm.get('documents') as FormArray;
+
+    if (type === 'content') {
+      // contents required bo‘ladi
+      Object.keys(contentsGroup.controls).forEach(lang => {
+        const langGroup = contentsGroup.get(lang) as FormGroup;
+        langGroup.get('title')?.setValidators([Validators.required, Validators.minLength(3), Validators.maxLength(100)]);
+        langGroup.get('description')?.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(500)]);
+        langGroup.get('content')?.setValidators([Validators.required, Validators.minLength(20)]);
+        langGroup.updateValueAndValidity();
+      });
+
+      // documents validator olib tashlanadi
+      documentsArray.controls.forEach(group => {
+        group.get('documentIds')?.clearValidators();
+        group.updateValueAndValidity();
+      });
+
+    } else if (type === 'documents') {
+      // contents validator olib tashlanadi
+      Object.keys(contentsGroup.controls).forEach(lang => {
+        const langGroup = contentsGroup.get(lang) as FormGroup;
+        langGroup.get('title')?.clearValidators();
+        langGroup.get('description')?.clearValidators();
+        langGroup.get('content')?.clearValidators();
+        langGroup.updateValueAndValidity();
+      });
+
+      // documents required validator qo‘shiladi
+      documentsArray.controls.forEach(group => {
+        group.get('documentIds')?.setValidators([Validators.required]);
+        group.updateValueAndValidity();
+      });
+    }
+  }
+
+  get documentArray(): FormArray {
+    return this.newsForm.get('documents') as FormArray;
+  }
+
+  addDocumentGroup() {
+    this.documentArray.push(
+      new FormGroup({
+        title: new FormControl(''),
+        documentIds: new FormControl([], Validators.required)
+      })
+    );
+  }
+
+  removeDocumentGroup(index: number) {
+    this.documentArray.removeAt(index);
   }
 
 
-
-
   onSubmit(): void {
+    console.log(this.newsForm.value)
     if (this.newsForm.invalid) {
       this.newsForm.markAllAsTouched();
       this.newsForm.setErrors(this.newsForm.errors)
@@ -237,6 +313,7 @@ export class CreatorComponent implements OnInit {
     }
 
     if (control.hasError('required')) {
+      console.log(control.errors)
       return 'Ushbu maydon majburiy';
     }
     return null;

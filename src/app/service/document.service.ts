@@ -23,7 +23,7 @@ export class DocumentService {
     return this.http.post<IResponse<IDocument>>(this.docUrl, doc);
   }
 
-  update(id: string, doc: IDocument) {
+  update(id: string, doc: FormData) {
     return this.http.put<IResponse<IDocument>>(`${this.docUrl}/${id}`, doc);
   }
 

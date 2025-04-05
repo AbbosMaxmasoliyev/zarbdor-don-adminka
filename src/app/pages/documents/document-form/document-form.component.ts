@@ -42,10 +42,10 @@ export class DocumentFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.documentForm = new FormGroup({
-      title: new FormControl(this.data!.title || '', [Validators.required, Validators.minLength(3)]),
-      document: new FormControl<any | string>(environment.apiUrl + this.data!.document || null, [Validators.required]),
-      thumbnail: new FormControl<any | string>(environment.apiUrl + this.data!.thumbnail || null, [Validators.required]),
-      type: new FormControl(this.data!.type || "", [Validators.required]),
+      title: new FormControl(this.data?.title || '', [Validators.required, Validators.minLength(3)]),
+      document: new FormControl<any | string>(null, [this.data?.document ? Validators.nullValidator : Validators.required]),
+      thumbnail: new FormControl<any | string>(null, [this.data?.document ? Validators.nullValidator : Validators.required]),
+      type: new FormControl(this.data?.type || "", [Validators.required]),
     });
   }
   getFormControl(control: AbstractControl | null): FormControl {
@@ -64,39 +64,80 @@ export class DocumentFormComponent implements OnInit {
   }
   save() {
     this.documentForm.markAllAsTouched();
-    console.log(this.documentForm.controls);
 
     if (this.documentForm.invalid) {
-      console.log("Form xatoliklar mavjud, iltimos, to‘g‘ri to‘ldiring.");
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Xatolik',
+        detail: "Formada xatoliklar mavjud. Iltimos, barcha maydonlarni to‘g‘ri to‘ldiring.",
+        life: 3000
+      });
       return;
     }
 
-    let formData = new FormData();
-    formData.append('title', this.documentForm.value.title);
-    formData.append('type', this.documentForm.value.type);
-    console.log(this.documentForm.value.contents)
+    const formData = new FormData();
 
-    const thumbnailImage = this.documentForm.get('thumbnail')!.value;
-    const documentFile = this.documentForm.get('document')!.value;
+    const fields = [
+      { key: 'title', type: 'string' },
+      { key: 'type', type: 'string' },
+      { key: 'thumbnail', type: 'object' },
+      { key: 'document', type: 'object' }
+    ];
 
-    if (thumbnailImage[0]) {
-      formData.append('thumbnail', thumbnailImage[0]); // Faylni FormData'ga qo'shish
+    fields.forEach(({ key, type }) => {
+      const value = this.documentForm.value[key];
+
+      if (typeof value === type) {
+        if (type === 'object' && value?.[0]) {
+          formData.append(key, value[0]); // Fayl (thumbnail, document)
+        } else {
+          formData.append(key, value); // Oddiy matn (title, type)
+        }
+      }
+    });
+
+    // Yaratish
+    if (!this.data) {
+      this.documentService.create(formData).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Muvaffaqiyatli',
+            detail: 'Hujjat muvaffaqiyatli yaratildi!',
+            life: 3000
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Xatolik',
+            detail: err?.error?.message || 'Yaratishda xatolik yuz berdi.',
+            life: 3000
+          });
+        }
+      });
     }
-    if (documentFile[0]) {
-      formData.append('document', documentFile[0]); // Faylni FormData'ga qo'shish
+    // Yangilash
+    else if (this.data._id) {
+      this.documentService.update(this.data._id, formData).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Muvaffaqiyatli',
+            detail: 'Hujjat muvaffaqiyatli yangilandi!',
+            life: 3000
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Xatolik',
+            detail: err?.error?.message || 'Yangilashda xatolik yuz berdi.',
+            life: 3000
+          });
+        }
+      });
     }
-    this.documentService.create(formData).subscribe(data => {
-      // this.messageService.add({ severity: 'success', summary: 'Muvaffaqqiyatli', detail: 'Hujjat muvaffaqqiyatli yaratildi!', life: 3000 });
-    })
-
-    // if (this.data?._id) {
-    //   this.documentService.update(this.data._id, this.documentForm.value).subscribe(() => {
-    //     this.dialogRef.close();
-    //   });
-    // } else {
-    //   this.documentService.create(this.documentForm.value).subscribe(() => {
-    //     this.dialogRef.close();
-    //   });
-    // }
   }
+
 }

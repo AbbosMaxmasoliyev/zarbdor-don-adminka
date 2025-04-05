@@ -1,69 +1,92 @@
-<div class="bg-white p-6 rounded-lg shadow-md">
-  <div class="flex justify-between items-center">
-    <h3 class="font-bold text-xl font-poppins">Recent Orders</h3>
+<div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full font-poppins">
+  <!-- Header -->
+  <div
+    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+  >
+    <h3 class="font-bold text-lg md:text-xl text-gray-800">Recent Orders</h3>
     <button
-      class="flex items-center gap-3 bg-purple-500 py-3 px-4 rounded-lg text-white font-poppins text-sm hover:bg-purple-600"
+      class="flex items-center gap-2 bg-purple-500 px-4 py-2 rounded-lg text-white text-sm hover:bg-purple-600 transition"
     >
       See All
     </button>
   </div>
-  <table class="w-full mt-4">
-    <thead>
-      <tr class="text-gray-500 border-b">
-        <th class="text-left p-2 font-semibold">Product</th>
-        <th class="text-left p-2 font-semibold">Customer</th>
-        <th class="text-left p-2 font-semibold">Total</th>
-        <th class="text-left p-2 font-semibold">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of orders" class="border-b">
-        <td class="p-2 text-sm">
-          {{ order.product }} <br /><span class="text-xs text-gray-500"
-            >+3 other products</span
-          >
-        </td>
-        <td class="p-2 text-sm">
-          {{ order.customer }} <br />
-          <span class="text-xs text-gray-500">{{ order.email }}</span>
-        </td>
-        <td class="p-2 text-sm text-gray-500">
-          {{ order.total }}
-        </td>
-        <td class="p-2">
-          <span
-            class="px-2 py-1 rounded-xl text-white bg-opacity-20 text-sm"
-            [ngClass]="{
-              'bg-yellow-500 text-yellow-500  ': order.status === 'Processing',
-              'bg-blue-500 text-blue-500 ': order.status === 'Shipped',
-              'bg-green-500 text-green-500 ': order.status === 'Delivered'
-            }"
-          >
-            {{ order.status }}
-          </span>
-        </td>
-        <td class="flex gap-3  p-2">
-          <button
-            class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-green-600 w-8 h-8 rounded-full"
-          >
-            <mat-icon
-              class="text-inherit !w-[16px] !h-[16px]"
-              svgIcon="pencil"
-            ></mat-icon>
-          </button>
-          <button
-            class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-purple-600 w-8 h-8 rounded-full"
-          >
-            <mat-icon class="!w-[16px] !h-[16px]" svgIcon="eye"></mat-icon>
-          </button>
 
-          <button
-            class="flex justify-center items-center text-xs text-gray-400 hover:bg-gray-300 hover:text-red-600 w-8 h-8 rounded-full"
-          >
-            <mat-icon class="!w-[16px] !h-[16px]" svgIcon="trash"></mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Responsive scrollable table wrapper -->
+  <div class="mt-4 overflow-x-auto">
+    <table class="w-full max-w-full text-sm text-left text-gray-700 overflow-auto">
+      <thead>
+        <tr class="text-gray-500 border-b text-xs">
+          <th class="p-3 font-semibold">Product</th>
+          <th class="p-3 font-semibold">Customer</th>
+          <th class="p-3 font-semibold">Total</th>
+          <th class="p-3 font-semibold">Status</th>
+          <th class="p-3 font-semibold text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let order of orders"
+          class="border-b hover:bg-gray-50 transition"
+        >
+          <!-- Product -->
+          <td class="p-3 text-sm font-medium text-gray-900">
+            {{ order.product }}
+            <div class="text-xs text-gray-500">+3 other products</div>
+          </td>
+
+          <!-- Customer -->
+          <td class="p-3 text-sm">
+            {{ order.customer }}
+            <div class="text-xs text-gray-500">{{ order.email }}</div>
+          </td>
+
+          <!-- Total -->
+          <td class="p-3 text-sm text-gray-700">
+            {{ order.total }}
+          </td>
+
+          <!-- Status badge -->
+          <td class="p-3 text-sm">
+            <span
+              class="px-3 py-1 rounded-full text-sm font-medium bg-opacity-20"
+              [ngClass]="{
+                'bg-yellow-500 text-yellow-700': order.status === 'Processing',
+                'bg-blue-500 text-blue-700': order.status === 'Shipped',
+                'bg-green-500 text-green-700': order.status === 'Delivered'
+              }"
+            >
+              {{ order.status }}
+            </span>
+          </td>
+
+          <!-- Actions -->
+          <td class="p-3">
+            <div class="flex justify-center items-center gap-2">
+              <button
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-green-600 rounded-full transition"
+              >
+                <mat-icon
+                  svgIcon="pencil"
+                  class="!w-[16px] !h-[16px] text-inherit"
+                ></mat-icon>
+              </button>
+              <button
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-purple-600 rounded-full transition"
+              >
+                <mat-icon svgIcon="eye" class="!w-[16px] !h-[16px]"></mat-icon>
+              </button>
+              <button
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-red-600 rounded-full transition"
+              >
+                <mat-icon
+                  svgIcon="trash"
+                  class="!w-[16px] !h-[16px]"
+                ></mat-icon>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

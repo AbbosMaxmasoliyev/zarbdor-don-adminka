@@ -17,13 +17,13 @@
       [formControl]="control()"
       [required]="required"
     >
-      <option value="" selected disabled  >{{ placeholder }}</option>
+      <option value="" selected disabled>{{ placeholder }}</option>
       <option *ngFor="let option of options; trackByFn" [value]="option.value">
         {{ option.label }}
       </option>
     </select>
   </div>
-  @if(error()) {
-  <span class="text-red-500 text-sm self-end px-2 py-1">{{ error() }}</span>
-  }
+  <span *ngIf="error()" class="text-red-500 text-sm self-end px-2 py-1">{{
+    error()
+  }}</span>
 </div>

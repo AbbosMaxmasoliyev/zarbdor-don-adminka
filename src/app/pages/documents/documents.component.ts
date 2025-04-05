@@ -7,6 +7,7 @@ import { DocumentStore } from '../../store/documents.store';
 import { IDocument } from '../../types/backend/document.type';
 import { AsyncPipe, NgIf, NgForOf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-documents',
@@ -26,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class DocumentsComponent implements OnInit {
   private dialog = inject(MatDialog);
   private store = inject(DocumentStore);
-
+  api = environment.apiUrl
   items = this.store.getItems();
   documents: IDocument[] | [] = [];
   loading = this.store.isLoading();

@@ -1,16 +1,30 @@
 import { OptionType } from './../../components/select/select.component';
 export interface IPage {
-  _id: string,
-  page: string,
-  createdAt: Date,
-  contents: {
-    [key: string]: {
-      _id: string,
-      title: string,
-      description: string,
-      content: string
-    }
-  }
+  _id: string;
+  page: string;
+  type: 'content' | 'documents';
+  createdAt: Date;
+
+  // Kontentlar (faqat type == 'content' bo‘lsa)
+  contents?: {
+    [lang: string]: {
+      _id: string;
+      title: string;
+      description: string;
+      content: string;
+    };
+  };
+
+  // Hujjat guruhlari (faqat type == 'documents' bo‘lsa)
+  documents?: {
+    title?: string;
+    documentIds: {
+      _id: string;
+      title: string;
+      type: 'pdf' | 'excel' | 'word';
+      document: string;
+    }[];
+  }[];
 }
 
 export const options: OptionType[] = [

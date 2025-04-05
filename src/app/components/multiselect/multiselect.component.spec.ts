@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BadgeComponent } from './badge.component';
+import { MultiselectComponent } from './multiselect.component';
 
-describe('BadgeComponent', () => {
-  let component: BadgeComponent;
-  let fixture: ComponentFixture<BadgeComponent>;
+describe('MultiselectComponent', () => {
+  let component: MultiselectComponent;
+  let fixture: ComponentFixture<MultiselectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BadgeComponent]
+      imports: [MultiselectComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BadgeComponent);
+    fixture = TestBed.createComponent(MultiselectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

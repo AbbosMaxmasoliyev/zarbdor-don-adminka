@@ -1,42 +1,43 @@
-import { OptionType } from '../../../components/select/select.component';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormArray,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
-import { InputComponent } from '../../../components/input/input.component';
-import { EditorComponent } from '../../../components/editor/editor.component';
-import { CommonModule } from '@angular/common';
-import { FileUploadComponent } from '../../../components/fileupload/fileupload.component';
-import { MatIconModule } from '@angular/material/icon';
-import { SelectComponent } from "../../../components/select/select.component";
-import { HttpService } from '../../../service/http.service';
+import { PageService } from '../../../service/page.service';
+import { DocumentService } from '../../../service/document.service';
 import { MessageService } from 'primeng/api';
+import { MatIconModule } from '@angular/material/icon';
+import { OptionType, SelectComponent } from '../../../components/select/select.component';
+import { CommonModule } from '@angular/common';
+import { InputComponent } from '../../../components/input/input.component';
+import { MultiSelectComponent } from '../../../components/multiselect/multiselect.component';
+import { EditorComponent } from '../../../components/editor/editor.component';
 import { Toast } from 'primeng/toast';
 import { TextareaComponent } from '../../../components/textarea/textarea.component';
-import { PageService } from '../../../service/page.service';
-import { PagesStore } from '../../../store/pages.store';
 
 @Component({
   selector: 'app-page-editor',
+  imports: [InputComponent, EditorComponent, MultiSelectComponent, CommonModule, MatIconModule, ReactiveFormsModule, SelectComponent, Toast, TextareaComponent],
   templateUrl: './page-editor.component.html',
-  imports: [InputComponent, EditorComponent, CommonModule, MatIconModule, ReactiveFormsModule, SelectComponent, Toast, TextareaComponent],
-  styleUrls: ['./page-editor.component.scss'],
-  standalone: true,
-  providers: [MessageService]
-
+  providers: [MessageService],
+  standalone: true
 })
-export class PageditorComponent implements OnInit {
-  pageStore = inject(PagesStore)
-  pageService = inject(PageService)
-  httpService = inject(HttpService)
-  constructor(
-    private messageService: MessageService,
-    private route: ActivatedRoute
-  ) { }
+export class PageEditorComponent implements OnInit {
+  pageForm!: FormGroup;
 
   languages: { [key: string]: boolean } = { uz: true };
-  languageForTranslatation: Record<string, string> = { uz: "O'zbek", ko: "Korea", ru: "Rus", en: "Ingliz tilida" }
-  availableLanguages: string[] = ['ru', 'en', 'ko'];
   languageFor: string[] = Object.keys(this.languages);
+  availableLanguages: string[] = ['ru', 'en', 'ko'];
+  languageForTranslatation: Record<string, string> = {
+    uz: "O'zbek",
+    ru: 'Rus',
+    en: 'Ingliz',
+    ko: 'Koreys'
+  };
 
   options: OptionType[] = [
     {
@@ -161,109 +162,189 @@ export class PageditorComponent implements OnInit {
     }
   ]
 
-  pageForm!: FormGroup;
+  documentOptions: { label: string; value: string }[] = [];
+
+  slug: string = '';
+
+  constructor(
+    private route: ActivatedRoute,
+    private pageService: PageService,
+    private documentService: DocumentService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit(): void {
-    const page = this.route.snapshot.paramMap.get('page');
-    console.log(page)
-    if (!page) {
-      return
-    }
-    this.pageStore.fetchItemById(page)
+    this.slug = this.route.snapshot.paramMap.get('page') || '';
+
     this.pageForm = new FormGroup({
       page: new FormControl('', [Validators.required]),
-      contents: new FormGroup({
-        uz: new FormGroup({
-          title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-          description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]),
-          content: new FormControl(``, [Validators.required, Validators.minLength(20)])
-        })
-      }),
+      type: new FormControl('', Validators.required),
+      contents: new FormGroup({}),
+      documents: new FormArray([])
     });
 
-    this.pageStore.getItem().subscribe(response => {
-      const page = response?.page;
-      if (!page) return;
-
-      this.pageForm.patchValue({
-        page: page.page,
-        contents: page.contents
-      });
-    });
-  }
-
-
-
-
-  onSubmit(): void {
-    console.log(this.pageForm.value)
-    if (this.pageForm.invalid) {
-      this.pageForm.markAllAsTouched();
-      console.log(this.pageForm.touched)
-      console.log("Form xatoliklar mavjud, iltimos, to‘g‘ri to‘ldiring.");
-      return;
-    }
-
-
-    // Contents obyektini JSON formatida qo'shish
-
-
-    this.pageService.update(this.pageForm.value.page,this.pageForm.value).subscribe(
-      (response) => {
-        console.log('Ma\'lumotlar yangilandi:', response);
-        this.messageService.add({ severity: 'success', summary: 'Muvaffaqqiyatli', detail: 'Post muvaffaqqiyatli yangilandi!', life: 3000 });
-      },
-      (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Muvaffqqiyatsiz', detail: 'Post muvaffaqqiyatli yangilanmadi!', life: 3000 });
-        console.log('Xatolik yuz berdi:', error);
-      }
-    );
-  }
-
-  createLanguageForm(): FormGroup {
-    return new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-      description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]),
-      content: new FormControl('', [Validators.required, Validators.minLength(20)])
-    });
-  }
-
-  addLanguage(lang: string): void {
-    if (!this.languages[lang]) {
-      this.languages[lang] = true;
-      this.availableLanguages = this.availableLanguages.filter(l => l !== lang);
-      (this.pageForm.get('translations') as FormGroup).addControl(lang, this.createLanguageForm());
-      this.languageFor = Object.keys(this.languages);
-    }
-  }
-
-  slugValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value;
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
-      return { slug: true };
-    }
-    return null;
+    this.loadDocuments();
+    this.loadPageData();
   }
 
   get contents(): FormGroup {
     return this.pageForm.get('contents') as FormGroup;
   }
 
-  getFormControl(control: AbstractControl | null): FormControl {
+  get documentArray(): FormArray {
+    return this.pageForm.get('documents') as FormArray;
+  }
+
+
+
+  removeDocumentGroup(index: number) {
+    this.documentArray.removeAt(index);
+  }
+  addDocumentGroup() {
+    this.documentArray.push(
+      new FormGroup({
+        title: new FormControl(''),
+        documentIds: new FormControl([], Validators.required)
+      })
+    );
+  }
+  loadDocuments() {
+    this.documentService.getAll().subscribe(res => {
+      this.documentOptions = res.data.map((d: any) => ({
+        label: d.title,
+        value: d._id
+      }));
+    });
+  }
+
+  loadPageData() {
+    this.pageService.getById(this.slug).subscribe((res: any) => {
+      const page = res.data;
+      this.pageForm.patchValue({
+        page: page.page,
+        type: page.type
+      });
+
+      if (page.type === 'content') {
+        const langs = Object.keys(page.contents || {});
+        langs.forEach(lang => {
+          this.languages[lang] = true;
+          this.languageFor = Object.keys(this.languages);
+          this.contents.addControl(
+            lang,
+            new FormGroup({
+              title: new FormControl(page.contents[lang]?.title || '', [
+                Validators.required,
+                Validators.minLength(3),
+                Validators.maxLength(100)
+              ]),
+              description: new FormControl(page.contents[lang]?.description || '', [
+                Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(500)
+              ]),
+              content: new FormControl(page.contents[lang]?.content || '', [
+                Validators.required,
+                Validators.minLength(20)
+              ])
+            })
+          );
+        });
+      }
+
+      if (page.type === 'documents') {
+        (page.documents || []).forEach((docGroup: any) => {
+          this.documentArray.push(
+            new FormGroup({
+              title: new FormControl(docGroup.title || ''),
+              documentIds: new FormControl(docGroup.documentIds?.map((d: any) => d._id), Validators.required)
+            })
+          );
+        });
+      }
+
+      this.updateValidationBasedOnType(page.type);
+    });
+  }
+
+  updateValidationBasedOnType(type: string) {
+    const contentsGroup = this.pageForm.get('contents') as FormGroup;
+    const documentsArray = this.pageForm.get('documents') as FormArray;
+
+    if (type === 'content') {
+      Object.keys(contentsGroup.controls).forEach(lang => {
+        const langGroup = contentsGroup.get(lang) as FormGroup;
+        langGroup.get('title')?.setValidators([Validators.required, Validators.minLength(3), Validators.maxLength(100)]);
+        langGroup.get('description')?.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(500)]);
+        langGroup.get('content')?.setValidators([Validators.required, Validators.minLength(20)]);
+        langGroup.updateValueAndValidity();
+      });
+
+      documentsArray.controls.forEach(group => {
+        group.get('documentIds')?.clearValidators();
+        group.updateValueAndValidity();
+      });
+    } else if (type === 'documents') {
+      Object.keys(contentsGroup.controls).forEach(lang => {
+        const langGroup = contentsGroup.get(lang) as FormGroup;
+        langGroup.get('title')?.clearValidators();
+        langGroup.get('description')?.clearValidators();
+        langGroup.get('content')?.clearValidators();
+        langGroup.updateValueAndValidity();
+      });
+
+      documentsArray.controls.forEach(group => {
+        group.get('documentIds')?.setValidators([Validators.required]);
+        group.updateValueAndValidity();
+      });
+    }
+  }
+
+  addLanguage(lang: string) {
+    if (!this.languages[lang]) {
+      this.languages[lang] = true;
+      this.languageFor = Object.keys(this.languages);
+      this.contents.addControl(
+        lang,
+        new FormGroup({
+          title: new FormControl('', [Validators.required]),
+          description: new FormControl('', [Validators.required]),
+          content: new FormControl('', [Validators.required])
+        })
+      );
+    }
+  }
+
+  getFormControl(control: any): FormControl {
     return control as FormControl;
   }
 
-  getFormControlError(controlName: string): string | null {
-    const control = this.pageForm.get(controlName);
-
-    if (!control || !control.errors || !control.touched) {
-      return null;
-    }
-
-    if (control.hasError('required')) {
-      return 'Ushbu maydon majburiy';
+  getFormControlError(path: string): string | null {
+    const control = this.pageForm.get(path);
+    if (control?.touched && control?.invalid) {
+      const errors = control.errors;
+      if (errors?.['required']) return 'Maydon to‘ldirilishi shart';
+      if (errors?.['minlength']) return `Minimal uzunlik: ${errors!['minlength'].requiredLength}`;
+      if (errors?.['maxlength']) return `Maksimal uzunlik: ${errors!['maxlength'].requiredLength}`;
     }
     return null;
   }
 
+  onSubmit() {
+    if (this.pageForm.invalid) {
+      this.pageForm.markAllAsTouched();
+      this.messageService.add({ severity: 'error', summary: 'Xatolik', detail: 'Iltimos, formani to‘ldiring' });
+      return;
+    }
+
+    const data = this.pageForm.value;
+    this.pageService.update(this.slug, data).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Saqlandi', detail: 'Sahifa muvaffaqiyatli yangilandi' });
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Xatolik', detail: err.error?.message || 'Xatolik yuz berdi' });
+      }
+    });
+  }
 }

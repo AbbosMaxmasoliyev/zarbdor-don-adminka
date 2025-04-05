@@ -1,36 +1,107 @@
-<div class="font-poppins">
-  <div class="grid grid-cols-4 gap-4 p-6">
-    <app-statistic-card
-      title="Total Revenue"
-      value="$75,500"
-      change="+10%"
-      bgColor="#181B27"
-      icon="account_balance_wallet"
-    ></app-statistic-card>
-    <app-statistic-card
-      title="Total Order"
-      value="31,500"
-      change="+15%"
-      bgColor="#6A0DAD"
-      icon="shopping_cart"
-    ></app-statistic-card>
-    <app-statistic-card
-      title="Total Customer"
-      value="$24,500"
-      change="-25%"
-      bgColor="#007BFF"
-      icon="people"
-    ></app-statistic-card>
-    <app-statistic-card
-      title="Total Product"
-      value="247"
-      change="0%"
-      bgColor="#0099CC"
-      icon="category"
-    ></app-statistic-card>
+<!-- Dashboard Wrapper -->
+<div class="p-6 space-y-6 font-poppins bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-semibold text-gray-800">Dashboard</h2>
+
   </div>
 
-  <div class="p-6">
-    <app-orders-table />
+  <!-- Statistic Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <p-card class="!bg-[#181B27] !text-white rounded-2xl p-5" [class]="''">
+      <ng-template pTemplate="header" class="!bg-inherit">
+        <div class="flex justify-between items-center !bg-transparent">
+          <span>Total Revenue</span>
+          <i class="pi pi-wallet text-xl"></i>
+        </div>
+      </ng-template>
+      <div class="text-2xl font-bold mt-2">$75,500</div>
+      <div class="text-green-400 text-sm">+10% this month</div>
+    </p-card>
+
+    <p-card class="!bg-[#6A0DAD] !text-white rounded-2xl p-5">
+      <ng-template class="!bg-transparent" pTemplate="header">
+        <div class="flex justify-between items-center !bg-transparent">
+          <span>Total Orders</span>
+          <i class="pi pi-shopping-cart text-xl"></i>
+        </div>
+      </ng-template>
+      <div class="text-2xl font-bold mt-2">31,500</div>
+      <div class="text-green-300 text-sm">+15% this week</div>
+    </p-card>
+
+    <p-card class="!bg-[#007BFF] !text-white rounded-2xl p-5">
+      <ng-template pTemplate="header">
+        <div class="flex justify-between items-center">
+          <span>Total Customers</span>
+          <i class="pi pi-users text-xl"></i>
+        </div>
+      </ng-template>
+      <div class="text-2xl font-bold mt-2">24,500</div>
+      <div class="text-red-300 text-sm">-25% this month</div>
+    </p-card>
+
+    <p-card class="!bg-[#0099CC] !text-white rounded-2xl p-5">
+      <ng-template pTemplate="header">
+        <div class="flex justify-between items-center">
+          <span>Total Products</span>
+          <i class="pi pi-tags text-xl"></i>
+        </div>
+      </ng-template>
+      <div class="text-2xl font-bold mt-2">247</div>
+      <div class="text-gray-200 text-sm">0% growth</div>
+    </p-card>
+  </div>
+
+  <!-- Recent Activity and Chart -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <!-- Orders List -->
+    <p-card class="lg:col-span-2">
+      <ng-template pTemplate="header">
+        <div class="flex justify-between items-center w-full">
+          <span>Recent Orders</span>
+          <button
+            pButton
+            label="See All"
+            icon="pi pi-arrow-right"
+            class="p-button-text p-button-sm"
+          ></button>
+        </div>
+      </ng-template>
+      <div class="mt-3 space-y-4">
+        <div
+          *ngFor="let order of orders"
+          class="flex flex-col sm:flex-row justify-between border p-3 rounded-md shadow-sm"
+        >
+          <div class="text-sm font-medium text-gray-800">
+            <p>Product: {{ order.product }}</p>
+            <p class="text-xs text-gray-500">Customer: {{ order.customer }}</p>
+          </div>
+          <div class="text-sm text-gray-700">Amount: {{ order.amount }}</div>
+          <div>
+            <p-tag
+              [value]="order.status"
+              [severity]="
+                order.status === 'Delivered'
+                  ? 'success'
+                  : order.status === 'Processing'
+                  ? 'warn'
+                  : 'secondary'
+              "
+            ></p-tag>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Line Chart (Mock) -->
+    <p-card>
+      <ng-template pTemplate="header">Revenue Chart</ng-template>
+      <p-chart
+        type="line"
+        [data]="chartData"
+        [options]="chartOptions"
+      ></p-chart>
+    </p-card>
   </div>
 </div>

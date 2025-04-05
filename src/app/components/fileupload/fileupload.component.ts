@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common'; // CommonModule (Angular kerakli
 @Component({
   selector: 'app-file-upload',
   templateUrl: './fileupload.component.html',
+  styleUrl: './fileupload.component.scss',
   providers: [MessageService],
   standalone: true,
   imports: [ReactiveFormsModule, FileUpload, ToastModule, CommonModule] // Kerakli modullar

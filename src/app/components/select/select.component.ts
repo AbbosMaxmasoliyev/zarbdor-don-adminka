@@ -27,6 +27,7 @@ export class SelectComponent {
   @Input() prefix = '';
   @Input() options: OptionType[] | null = null
   @Input() required: boolean = false
+  @Input() multi: boolean = false;
   @Input() errorControl: string = ("");
 
 
@@ -51,6 +52,7 @@ export class SelectComponent {
     this.selectContainer()?.nativeElement.classList.add('focused');
   }
   onBlur(): void {
+    console.log(this.control().value)
     this.selectContainer()?.nativeElement.classList.remove('focused');
   }
 
