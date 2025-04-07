@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from '../input/input.component';
 import { CommonModule } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +12,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  constructor(public menuService: MenuService){}
+  constructor(public menuService: MenuService) { }
   notifications = 2;
   messages = 2;
   userName = 'Jay Hargudson';
   userRole = 'Manager';
+  control = new FormControl("")
 }

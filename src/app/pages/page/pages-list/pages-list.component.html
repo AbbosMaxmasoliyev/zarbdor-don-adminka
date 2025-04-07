@@ -83,14 +83,14 @@
           <h5
             *ngIf="page.contents && page.type == 'content'"
             class="text-base font-semibold text-gray-900 dark:text-white line-clamp-1">
-            Sarlavha: {{ page.contents["uz"]?.title }}
+            Sarlavha: {{ page.contents["uz"]!.title }}
           </h5>
 
           <!-- Izoh -->
           <p
             *ngIf="page.contents && page.type == 'content'"
             class="text-sm text-gray-700 dark:text-gray-400 line-clamp-4">
-            Izoh: {{ page.contents["uz"]?.description }}
+            Izoh: {{ page.contents!["uz"]!.description }}
           </p>
 
           <!-- Action tugmalar -->
