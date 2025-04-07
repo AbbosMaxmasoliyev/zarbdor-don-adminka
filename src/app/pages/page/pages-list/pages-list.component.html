@@ -1,58 +1,51 @@
 <div>
-  <p-toast />
+  <p-toast></p-toast>
   <div class="flex items-center w-full justify-between my-3">
     <p class="font-bold text-xl font-poppins">Sahifalar</p>
 
     <a
       [routerLink]="['/pages/create']"
       routerLinkActive="router-link-active"
-      class="flex items-center gap-3 bg-purple-500 py-3 px-4 rounded-lg text-white font-poppins text-sm hover:bg-purple-600"
-    >
-      <mat-icon svgIcon="plus" class="!w-[16px]"></mat-icon>
+      class="flex items-center gap-3 bg-purple-500 py-3 px-4 rounded-lg text-white font-poppins text-sm hover:bg-purple-600">
+      <mat-icon
+        svgIcon="plus"
+        class="!w-[16px]"></mat-icon>
       Sahifa qo'shish
     </a>
   </div>
   <div class="bg-white rounded-xl overflow-hidden shadow">
     <div
       *ngIf="isLoading() && !pagesList()?.length"
-      class="h-[240px] flex flex-col items-center w-full justify-center"
-    >
+      class="h-[240px] flex flex-col items-center w-full justify-center">
       <p-progress-spinner
         strokeWidth="4"
         fill="transparent"
         animationDuration=".5s"
-        [style]="{ width: '70px', height: '70px' }"
-      />
+        [style]="{ width: '70px', height: '70px' }"></p-progress-spinner>
       <p>Yuklanmoqda....</p>
     </div>
     <div
       *ngIf="!pagesList()?.length && !isLoading()"
-      class="h-[240px] flex flex-col items-center w-full justify-center"
-    >
+      class="h-[240px] flex flex-col items-center w-full justify-center">
       <p>Sahifalar hozirda mavjud emas</p>
     </div>
   </div>
 
   <div
     *ngIf="pagesList()?.length"
-    class="grid grid-cols-1 justify-center bg-white rounded-xl overflow-hidden shadow-md p-4"
-  >
+    class="grid grid-cols-1 justify-center bg-white rounded-xl overflow-hidden shadow-md p-4">
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full m-auto gap-3 items-start">
       <div
         *ngFor="let page of pagesList(); let i = index"
-        class="group max-w-sm w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow hover:shadow-md hover:scale-[1.01] transition-all duration-200 font-poppins"
-      >
+        class="group max-w-sm w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow hover:shadow-md hover:scale-[1.01] transition-all duration-200 font-poppins">
         <!-- Rasm qismi -->
         <div class="relative">
           <img
             class="w-full h-[180px] object-cover"
             src="/assets/unsplash.jpg"
-            alt="Preview image"
-          />
+            alt="Preview image">
 
-          <p
-            class="text-xl md:text-3xl font-medium text-gray-800 dark:text-white  absolute top-10 text-center w-full"
-          >
+          <p class="text-xl md:text-3xl font-medium text-gray-800 dark:text-white  absolute top-10 text-center w-full">
             <span class="font-semibold">{{ optionsObject[page.page] }}</span>
           </p>
         </div>
@@ -71,32 +64,32 @@
 
           <!-- Documentlar ro'yxati -->
           <ul
-            *ngIf="page.documents?.[0]?.documentIds"
-            class="flex flex-col gap-1 text-sm text-blue-600"
-          >
+            *ngIf="page.type==='documents'"
+            class="flex flex-col gap-1 text-sm text-blue-600">
             <li
               *ngFor="let doc of page.documents![0]?.documentIds"
-              class="hover:underline"
-            >
-              <a [href]="apiUrl + doc.document" target="_blank">{{
+              class="hover:underline">
+              <a
+                [href]="apiUrl + doc.document"
+                target="_blank">
+                {{
                 doc.title
-              }}</a>
+              }}
+              </a>
             </li>
           </ul>
 
           <!-- Sarlavha -->
           <h5
             *ngIf="page.contents && page.type == 'content'"
-            class="text-base font-semibold text-gray-900 dark:text-white line-clamp-1"
-          >
+            class="text-base font-semibold text-gray-900 dark:text-white line-clamp-1">
             Sarlavha: {{ page.contents["uz"]?.title }}
           </h5>
 
           <!-- Izoh -->
           <p
             *ngIf="page.contents && page.type == 'content'"
-            class="text-sm text-gray-700 dark:text-gray-400 line-clamp-4"
-          >
+            class="text-sm text-gray-700 dark:text-gray-400 line-clamp-4">
             Izoh: {{ page.contents["uz"]?.description }}
           </p>
 
@@ -104,22 +97,24 @@
           <div class="flex justify-start items-center gap-2 mt-2">
             <a
               [routerLink]="'/page-edit/' + page.page"
-              class="w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-green-100 text-gray-500 hover:text-green-600 rounded-full transition-all"
-            >
-              <mat-icon class="!w-[16px] !h-[16px]" svgIcon="pencil"></mat-icon>
+              class="w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-green-100 text-gray-500 hover:text-green-600 rounded-full transition-all">
+              <mat-icon
+                class="!w-[16px] !h-[16px]"
+                svgIcon="pencil"></mat-icon>
             </a>
 
-            <a
-              class="w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-purple-100 text-gray-500 hover:text-purple-600 rounded-full transition-all"
-            >
-              <mat-icon class="!w-[16px] !h-[16px]" svgIcon="eye"></mat-icon>
+            <a class="w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-purple-100 text-gray-500 hover:text-purple-600 rounded-full transition-all">
+              <mat-icon
+                class="!w-[16px] !h-[16px]"
+                svgIcon="eye"></mat-icon>
             </a>
 
             <button
               (click)="pageDelete(page._id)"
-              class="w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 rounded-full transition-all"
-            >
-              <mat-icon class="!w-[16px] !h-[16px]" svgIcon="trash"></mat-icon>
+              class="w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 rounded-full transition-all">
+              <mat-icon
+                class="!w-[16px] !h-[16px]"
+                svgIcon="trash"></mat-icon>
             </button>
           </div>
         </div>

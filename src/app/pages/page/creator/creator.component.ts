@@ -280,12 +280,18 @@ export class CreatorComponent implements OnInit {
     });
   }
 
-  addLanguage(lang: string): void {
+  addLanguage(lang: string) {
     if (!this.languages[lang]) {
       this.languages[lang] = true;
-      this.availableLanguages = this.availableLanguages.filter(l => l !== lang);
-      (this.newsForm.get('translations') as FormGroup).addControl(lang, this.createLanguageForm());
       this.languageFor = Object.keys(this.languages);
+      this.contents.addControl(
+        lang,
+        new FormGroup({
+          title: new FormControl('', [Validators.required]),
+          description: new FormControl('', [Validators.required]),
+          content: new FormControl('', [Validators.required])
+        })
+      );
     }
   }
 

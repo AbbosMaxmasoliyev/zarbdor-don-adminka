@@ -1,4 +1,14 @@
-import { Component, OnInit, OnDestroy, input, viewChild, ElementRef, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  ViewChild,
+  ElementRef,
+  OnChanges,
+  SimpleChanges,
+  signal
+} from '@angular/core';
 import { Editor, NgxEditorComponent, NgxEditorModule, Toolbar } from 'ngx-editor';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -8,12 +18,21 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgxEditorModule],
   templateUrl: './editor.component.html',
-  styleUrl: './editor.component.scss'
+  styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit, OnDestroy {
+export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   editor!: Editor;
-  label = input<string>("");
-  required = input<boolean>(false)
+
+  @Input() content: string = '';
+  @Input() label: string = '';
+  @Input() required: boolean = false;
+  @Input() control: FormControl = new FormControl('');
+  @Input() errorControl: string = '';
+
+  @ViewChild('editorComponent') editorComponent!: ElementRef<HTMLDivElement>;
+
+  error = signal('');
+
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline', 'strike'],
@@ -24,23 +43,21 @@ export class EditorComponent implements OnInit, OnDestroy {
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
-  control = input<FormControl>(new FormControl(""));
-  editorComponent = viewChild<ElementRef<HTMLDivElement>>('editorComponent'); // `@ViewChild` sintaksisiga o‘xshatib yozildi
-  errorControl = input<string>("");
 
-  error = signal('');
-  ngOnChanges(): void {
-    if (this.errorControl()) {
-      this.error.set(this.errorControl());
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['errorControl'] && this.errorControl) {
+      this.error.set(this.errorControl);
     }
   }
+
   focusEditor() {
-    this.editorComponent()?.nativeElement.classList.add("focused")
+    this.editorComponent?.nativeElement.classList.add('focused');
   }
 
   onBlur() {
-    this.editorComponent()?.nativeElement.classList.remove("focused")
+    this.editorComponent?.nativeElement.classList.remove('focused');
   }
+
   ngOnInit(): void {
     this.editor = new Editor();
   }

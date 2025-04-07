@@ -230,6 +230,8 @@ export class PageEditorComponent implements OnInit {
         langs.forEach(lang => {
           this.languages[lang] = true;
           this.languageFor = Object.keys(this.languages);
+
+
           this.contents.addControl(
             lang,
             new FormGroup({
@@ -243,12 +245,13 @@ export class PageEditorComponent implements OnInit {
                 Validators.minLength(10),
                 Validators.maxLength(500)
               ]),
-              content: new FormControl(page.contents[lang]?.content || '', [
+              content: new FormControl(page.contents![lang]?.content || '', [
                 Validators.required,
                 Validators.minLength(20)
               ])
             })
           );
+
         });
       }
 

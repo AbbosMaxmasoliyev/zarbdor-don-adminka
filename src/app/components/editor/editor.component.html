@@ -1,22 +1,29 @@
 <div class="pb-4">
-  <label *ngIf="label" class="block mb-1 text-gray-600 text-sm">{{
-    label()
-  }}</label>
+  <label
+    *ngIf="label"
+    class="block mb-1 text-gray-600 text-sm">
+    {{ label }}
+  </label>
   <div
     #editorComponent
-    class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text"
-  >
-    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-    <ngx-editor
-      [required]="required()"
-      (focusIn)="this.focusEditor()"
-      (focusOut)="this.onBlur()"
+    class="border border-1 border-[#E0E2E7] px-2 py-2 rounded-lg bg-[#F9F9FC] cursor-text">
+    <ngx-editor-menu
       [editor]="editor"
-      [formControl]="control()"
-      [className]="'w-32'"
-    ></ngx-editor>
-    @if(error()) {
-    <span class="text-red-500 text-sm self-end px-2 py-1">{{ error() }}</span>
-    }
+      [toolbar]="toolbar"></ngx-editor-menu>
+    <ngx-editor
+      name="editorContent"
+      [required]="required"
+      (focusIn)="focusEditor()"
+      (focusOut)="onBlur()"
+      [editor]="editor"
+      [formControl]="control"
+      class="w-32">
+      {{ content }}
+    </ngx-editor>
+    <span
+      *ngIf="error()"
+      class="text-red-500 text-sm self-end px-2 py-1">
+      {{ error() }}
+    </span>
   </div>
 </div>
