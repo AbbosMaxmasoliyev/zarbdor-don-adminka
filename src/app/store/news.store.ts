@@ -13,7 +13,7 @@ export class NewsStore {
   private loading = new BehaviorSubject<boolean>(false);
   private error = new BehaviorSubject<string | null>(null);
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: NewsService) { }
 
   getItems(): Observable<IResponse<INews[]> | null> {
     return this.items.asObservable();

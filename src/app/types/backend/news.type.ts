@@ -1,4 +1,5 @@
 export interface INews {
+  _id:string,
   image: string | File,
   slug: string,
   category: string,
