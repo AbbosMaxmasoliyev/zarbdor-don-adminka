@@ -17,7 +17,7 @@
         [control]="getFormControl(documentForm.get('document'))"
         label="Hujjatni yuklang"
         [required]="true"
-        accepts="*"
+        accepts="*/*"
         [errorControl]="getFormControlError('document') || ''"
       />
       <app-file-upload
