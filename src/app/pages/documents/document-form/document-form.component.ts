@@ -10,13 +10,14 @@ import { FileUploadComponent } from "../../../components/fileupload/fileupload.c
 import { InputComponent } from "../../../components/input/input.component";
 import { OptionType, SelectComponent } from "../../../components/select/select.component";
 import { DocumentStore } from "../../../store/documents.store";
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-document-form',
   templateUrl: './document-form.component.html',
   standalone: true,
   providers: [MessageService],
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, FileUploadComponent, InputComponent, SelectComponent, InputComponent]
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, FileUploadComponent, InputComponent, SelectComponent, InputComponent, Toast]
 })
 export class DocumentFormComponent implements OnInit {
   documentForm!: FormGroup;
@@ -121,6 +122,7 @@ export class DocumentFormComponent implements OnInit {
     else if (this.data._id) {
       this.documentService.update(this.data._id, formData).subscribe({
         next: () => {
+          console.log("ishladi")
           this.messageService.add({
             severity: 'success',
             summary: 'Muvaffaqiyatli',

@@ -8,6 +8,8 @@ import { IDocument } from '../../types/backend/document.type';
 import { AsyncPipe, NgIf, NgForOf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { environment } from '../../../environments/environment.development';
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { ComponentType } from '@angular/cdk/portal';
 
 @Component({
   selector: 'app-documents',
@@ -41,11 +43,23 @@ export class DocumentsComponent implements OnInit {
 
 
 
-  openModal(document?: IDocument) {
+  openUpdateModal(document?: IDocument,): void {
+
     const dialogRef = this.dialog.open(DocumentFormComponent, {
       data: document || null,
       panelClass: 'rounded-sm',
-    });
+      width: '500px' // xohlasangiz o‘lcham qo‘shing
+    })
+
+    dialogRef.afterClosed().subscribe(() => this.store.fetchItems());
+  }
+  openDeleteModal(document?: IDocument,): void {
+
+    const dialogRef = this.dialog.open(DeleteModalComponent, {
+      data: document || null,
+      panelClass: 'rounded-sm',
+      width: '500px' // xohlasangiz o‘lcham qo‘shing
+    })
 
     dialogRef.afterClosed().subscribe(() => this.store.fetchItems());
   }

@@ -2,22 +2,26 @@
   <div class="flex justify-between items-center mb-4">
     <h2 class="text-xl font-semibold">Hujjatlar ro‘yxati</h2>
     <button
-      (click)="openModal()"
-      class="flex items-center gap-3 bg-purple-500 py-3 px-4 rounded-lg text-white font-poppins text-sm hover:bg-purple-600"
-    >
+      (click)="openUpdateModal()"
+      class="flex items-center gap-3 bg-purple-500 py-3 px-4 rounded-lg text-white font-poppins text-sm hover:bg-purple-600">
       + Yangi hujjat
     </button>
   </div>
 
-  <div *ngIf="loading | async" class="text-gray-500 mb-4">Yuklanmoqda...</div>
-  <div *ngIf="error | async as error" class="text-red-500 mb-4">
+  <div
+    *ngIf="loading | async"
+    class="text-gray-500 mb-4">
+    Yuklanmoqda...
+  </div>
+  <div
+    *ngIf="error | async as error"
+    class="text-red-500 mb-4">
     Hujjatlar mavjud emas
   </div>
   <!-- Wrapper for responsive scroll on small screens -->
   <div
     class="w-full overflow-x-auto rounded-md border border-gray-200"
-    *ngIf="loading && documents.length"
-  >
+    *ngIf="loading && documents.length">
     <table class="max-w-[90%] text-sm text-left text-gray-700 font-poppins">
       <thead class="bg-gray-100 text-xs uppercase text-gray-500">
         <tr>
@@ -28,36 +32,34 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let doc of documents" class="border-b hover:bg-gray-50">
+        <tr
+          *ngFor="let doc of documents"
+          class="border-b hover:bg-gray-50">
           <td class="md:px-4 px-2 py-2 whitespace-nowrap">{{ doc.title }}</td>
           <td class="md:px-4 px-2 py-2 whitespace-nowrap">
             <a
               [href]="api + doc.document"
               target="_blank"
-              class="text-blue-600 hover:underline break-all"
-              >{{ doc.document }}</a
-            >
+              class="text-blue-600 hover:underline break-all">
+              {{ doc.document }}
+            </a>
           </td>
           <td class="md:px-4 px-2 py-2 capitalize">{{ doc.type }}</td>
           <td class="md:px-4 px-2 py-2 text-center">
             <div class="flex items-center justify-center gap-2">
               <button
-                (click)="openModal(doc)"
-                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-green-600 rounded-full"
-              >
+                (click)="openUpdateModal(doc)"
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-green-600 rounded-full">
                 <mat-icon
                   class="!w-[16px] !h-[16px]"
-                  svgIcon="pencil"
-                ></mat-icon>
+                  svgIcon="pencil"></mat-icon>
               </button>
               <button
-                (click)="openModal(doc)"
-                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-red-600 rounded-full"
-              >
+                (click)="openDeleteModal(doc)"
+                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-red-600 rounded-full">
                 <mat-icon
                   class="!w-[16px] !h-[16px]"
-                  svgIcon="trash"
-                ></mat-icon>
+                  svgIcon="trash"></mat-icon>
               </button>
             </div>
           </td>

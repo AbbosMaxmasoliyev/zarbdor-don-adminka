@@ -24,10 +24,10 @@ export class DocumentService {
   }
 
   update(id: string, doc: FormData) {
-    return this.http.put<IResponse<IDocument>>(`${this.docUrl}/${id}`, doc);
+    return this.http.put<IResponse<IDocument>>(`${this.docUrl}${id}`, doc);
   }
 
   delete(id: string) {
-    return this.http.delete(`${this.docUrl}/${id}`);
+    return this.http.delete(`${this.docUrl}${id}`);
   }
 }

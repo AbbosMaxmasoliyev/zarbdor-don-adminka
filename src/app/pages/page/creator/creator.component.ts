@@ -150,6 +150,10 @@ export class CreatorComponent implements OnInit {
     {
       "value": "bosh-ish-orinlari",
       "label": "Bo'sh ish o'rinlari"
+    },
+    {
+      "value": "arxiv",
+      "label": "Arxiv"
     }
   ]
   ngOnInit(): void {

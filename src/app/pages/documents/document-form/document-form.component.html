@@ -1,4 +1,5 @@
 <div class="p-5 bg-white rounded-xl min-w-96">
+  <p-toast/>
   <h2 class="text-lg font-semibold mb-4">
     {{ data?._id ? "Hujjatni tahrirlash" : "Yangi hujjat qo‘shish" }}
   </h2>
@@ -19,7 +20,7 @@
         [control]="getFormControl(documentForm.get('document'))"
         label="Hujjatni yuklang"
         [required]="true"
-        accepts=".jpg,.jpeg,.png,.gif,.webp,.bmp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.ods"
+        accepts=".jpg,.jpeg,.png,.gif,.webp,.bmp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.ods,.pptx,.ppt"
         [errorControl]="getFormControlError('document') || ''"></app-file-upload>
       <app-file-upload
         [control]="getFormControl(documentForm.get('thumbnail'))"

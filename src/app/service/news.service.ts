@@ -27,15 +27,15 @@ export class NewsService {
   }
 
   getById(id: string): Observable<any> {
-    return this.httpClient.get<any>(`${this.newsUrl}/${id}`);
+    return this.httpClient.get<any>(`${this.newsUrl}${id}`);
   }
 
   update(id: string, data: any): Observable<any> {
-    return this.httpClient.put<any>(`${this.newsUrl}/${id}`, data);
+    return this.httpClient.put<any>(`${this.newsUrl}${id}`, data);
   }
 
   deleteById(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.newsUrl}/${id}`);
+    return this.httpClient.delete<void>(`${this.newsUrl}${id}`);
   }
 
 

@@ -1,4 +1,6 @@
+import { apiUrl } from "./constanta";
+
 export const environment = {
   production: true,
-  apiUrl: 'https://donargos-backend.onrender.com/',
+  apiUrl: apiUrl,
 };

@@ -73,12 +73,9 @@
             svgIcon="pencil"
             class="!w-[16px] !h-[16px] text-inherit"></mat-icon>
         </a>
-        <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-purple-600 rounded-full transition-all">
-          <mat-icon
-            svgIcon="eye"
-            class="!w-[16px] !h-[16px]"></mat-icon>
-        </button>
-        <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-red-600 rounded-full transition-all">
+        <button
+          (click)="deleteNews(news!._id)"
+          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-red-600 rounded-full transition-all">
           <mat-icon
             svgIcon="trash"
             class="!w-[16px] !h-[16px]"></mat-icon>
